@@ -87,6 +87,9 @@ class ViewLogoScreen extends Component {
                                             </div>
                                         )}
                                     </Mutation>
+                                    <div>
+                                        
+                                    </div>
                                 </div>
                             </div>
                         </div>

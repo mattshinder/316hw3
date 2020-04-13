@@ -165,7 +165,7 @@ var mutation = new GraphQLObjectType({
                 },
                 resolve(root, params) {
                     return LogoModel.findByIdAndUpdate(params.id, { text: params.text, color: params.color, fontSize: params.fontSize, padding: params.padding,
-                        margin: params.maring, backgroundColor: params.backgroundColor, borderColor: params.borderColor, borderRadius: params.borderRadius,
+                        margin: params.margin, backgroundColor: params.backgroundColor, borderColor: params.borderColor, borderRadius: params.borderRadius,
                         borderWidth: params.borderWidth, lastUpdate: new Date() }, function (err) {
                         if (err) return next(err);
                     });

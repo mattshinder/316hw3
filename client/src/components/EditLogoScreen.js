@@ -48,6 +48,7 @@ const UPDATE_LOGO = gql`
         }
 `;
 
+
 class EditLogoScreen extends Component {
 
     render() {

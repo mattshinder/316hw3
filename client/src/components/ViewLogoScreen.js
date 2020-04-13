@@ -53,7 +53,7 @@ class ViewLogoScreen extends Component {
                                         <dt>Text:</dt>
                                         <dd>{data.logo.text}</dd>
                                         <dt>Color:</dt>
-                                        <dd>{data.logo.color}</dd>
+                                        <dd style={{color: data.logo.color}}>{data.logo.color}</dd>
                                         <dt>Font Size:</dt>
                                         <dd>{data.logo.fontSize}</dd>
                                         <dt>Padding:</dt>
@@ -61,9 +61,9 @@ class ViewLogoScreen extends Component {
                                         <dt>Margin:</dt>
                                         <dd>{data.logo.margin}</dd>
                                         <dt>Background Color:</dt>
-                                        <dd>{data.logo.backgroundColor}</dd>
+                                        <dd style={{color: data.logo.backgroundColor}}>{data.logo.backgroundColor}</dd>
                                         <dt>Border Color:</dt>
-                                        <dd>{data.logo.borderColor}</dd>
+                                        <dd style={{color: data.logo.borderColor}}>{data.logo.borderColor}</dd>
                                         <dt>Border Radius:</dt>
                                         <dd>{data.logo.borderRadius}</dd>
                                         <dt>Border Thickness:</dt>
@@ -87,8 +87,18 @@ class ViewLogoScreen extends Component {
                                             </div>
                                         )}
                                     </Mutation>
-                                    <div>
-                                        
+                                    <div style={{
+                                        borderStyle: 'solid',
+                                        color: data.logo.color,
+                                        fontSize: data.logo.fontSize + "pt",
+                                        padding: data.logo.padding + "pt",
+                                        margin: data.logo.margin + "pt",
+                                        backgroundColor: data.logo.backgroundColor,
+                                        borderColor: data.logo.borderColor,
+                                        borderRadius: data.logo.borderRadius + "pt",
+                                        borderWidth: data.logo.borderWidth + "pt",
+                                    }}>
+                                        {data.logo.text}
                                     </div>
                                 </div>
                             </div>

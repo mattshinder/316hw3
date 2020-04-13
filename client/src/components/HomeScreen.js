@@ -30,7 +30,7 @@ class HomeScreen extends Component {
                                 {data.logos.map((logo, index) => (
                                     <div key={index} className='home_logo_link'
                                         style={{ cursor: "pointer" }}>
-                                        <Link to={`/view/${logo._id}`}>{logo.text}</Link>
+                                        <Link to={`/view/${logo._id}`}><button class="btn btn-danger">{logo.text}</button></Link>
                                     </div>
                                 ))}
                             </div>
@@ -40,7 +40,7 @@ class HomeScreen extends Component {
                                     Logo Maker
                                 </div>
                                 <div>
-                                    <button><Link id="add_logo_button" to="/create">Create Logo</Link></button>
+                                    <Link id="add_logo_button" to="/create"><button class="btn btn-dark">Create Logo</button></Link>
                                 </div>
                             </div>
                         </div>

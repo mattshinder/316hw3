@@ -108,7 +108,7 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="text">Text:</label>
                                         <input type="text" className="form-control" name="text" ref={node => {
                                             text = node;
-                                        }} placeholder={this.state.text} onChange={this.handleTextChange}/>
+                                        }} placeholder={this.state.text} defaultValue={this.state.text} onChange={this.handleTextChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="color">Color:</label>
@@ -120,19 +120,19 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="fontSize">Font Size:</label>
                                         <input type="number" className="form-control" name="fontSize" ref={node => {
                                             fontSize = node;
-                                        }} placeholder={this.state.fontSize} onChange={this.handleFontSizeChange}/>
+                                        }} placeholder={this.state.fontSize} defaultValue={this.state.fontSize} onChange={this.handleFontSizeChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="padding">Padding:</label>
                                         <input type="number" className="form-control" name="padding" ref={node => {
                                             padding = node;
-                                        }} placeholder={this.state.padding} onChange={this.handlePaddingChange}/>
+                                        }} placeholder={this.state.padding} defaultValue={this.state.padding} onChange={this.handlePaddingChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="margin">Margin:</label>
                                         <input type="number" className="form-control" name="margin" ref={node => {
                                             margin = node;
-                                        }} placeholder={this.state.margin} onChange={this.handleMarginChange}/>
+                                        }} placeholder={this.state.margin} defaultValue={this.state.margin} onChange={this.handleMarginChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="backgroundColor">Background Color:</label>
@@ -150,13 +150,13 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="borderRadius">Border Radius:</label>
                                         <input type="number" className="form-control" name="borderRadius" ref={node => {
                                             borderRadius = node;
-                                        }} placeholder={this.state.borderRadius} onChange={this.handleBorderRadiusChange}/>
+                                        }} placeholder={this.state.borderRadius} defaultValue={this.state.borderRadius} onChange={this.handleBorderRadiusChange}/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="borderWidth">Border Thickness:</label>
                                         <input type="number" className="form-control" name="borderWidth" ref={node => {
                                             borderWidth = node;
-                                        }} placeholder={this.state.borderWidth} onChange={this.handleBorderWidthChange}/>
+                                        }} placeholder={this.state.borderWidth} defaultValue={this.state.borderWidth} onChange={this.handleBorderWidthChange}/>
                                     </div>
                                     <button type="submit" className="btn btn-success">Submit</button>
                                     <div style={{

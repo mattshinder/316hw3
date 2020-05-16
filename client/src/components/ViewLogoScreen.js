@@ -18,6 +18,7 @@ const GET_LOGO = gql`
             borderRadius
             borderWidth
             lastUpdate
+            imageURL
         }
     }
 `;
@@ -70,6 +71,8 @@ class ViewLogoScreen extends Component {
                                         <dd>{data.logo.borderWidth}</dd>
                                         <dt>Last Updated:</dt>
                                         <dd>{data.logo.lastUpdate}</dd>
+                                        <dt>Image URL:</dt>
+                                        <dd>{data.logo.imageURL}</dd>
                                     </dl>
                                     <Mutation mutation={DELETE_LOGO} key={data.logo._id} onCompleted={() => this.props.history.push('/')}>
                                         {(removeLogo, { loading, error }) => (
@@ -99,6 +102,9 @@ class ViewLogoScreen extends Component {
                                         borderWidth: data.logo.borderWidth + "pt",
                                     }}>
                                         {data.logo.text}
+                                    </div>
+                                    <div>
+                                        {<img src={data.logo.imageURL} alt=""></img>}
                                     </div>
                                 </div>
                             </div>

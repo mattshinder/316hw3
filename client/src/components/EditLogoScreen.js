@@ -16,6 +16,7 @@ const GET_LOGO = gql`
             borderColor
             borderRadius
             borderWidth
+            imageURL
         }
     }
 `;
@@ -31,7 +32,8 @@ const UPDATE_LOGO = gql`
         $backgroundColor: String!,
         $borderColor: String!,
         $borderRadius: Int!,
-        $borderWidth: Int!) {
+        $borderWidth: Int!,
+        $imageURL: String!) {
             updateLogo(
                 id: $id,
                 text: $text,
@@ -42,7 +44,8 @@ const UPDATE_LOGO = gql`
                 backgroundColor: $backgroundColor,
                 borderColor: $borderColor,
                 borderRadius: $borderRadius,
-                borderWidth: $borderWidth) {
+                borderWidth: $borderWidth,
+                imageURL: $imageURL) {
                     lastUpdate
                 }
         }
@@ -65,7 +68,8 @@ class EditLogoScreen extends Component {
                 backgroundColor: "",
                 borderColor: "",
                 borderRadius: "",
-                borderWidth: ""
+                borderWidth: "",
+                imageURL: "",
             }
     }
     handleTextChange = (event) => {
@@ -95,9 +99,12 @@ class EditLogoScreen extends Component {
     handleBorderWidthChange = (event) => {
         this.setState({borderWidth: event.target.value});
     }
+    handleImageURLChange = (event) => {
+        this.setState({imageURL: event.target.value});
+    }
 
     render() {
-        let text, color, fontSize, padding, margin, backgroundColor, borderColor, borderRadius, borderWidth;
+        let text, color, fontSize, padding, margin, backgroundColor, borderColor, borderRadius, borderWidth, imageURL;
         return (
             <Query query={GET_LOGO} variables={{ logoId: this.props.match.params.id }}>
                 {({ loading, error, data }) => {
@@ -113,7 +120,8 @@ class EditLogoScreen extends Component {
                             backgroundColor: data.logo.backgroundColor,
                             borderColor: data.logo.borderColor,
                             borderRadius: data.logo.borderRadius,
-                            borderWidth: data.logo.borderWidth
+                            borderWidth: data.logo.borderWidth,
+                            imageURL: data.logo.imageURL
                             });
                     }
 
@@ -133,7 +141,8 @@ class EditLogoScreen extends Component {
                                                 e.preventDefault();
                                                 updateLogo({ variables: { id: data.logo._id, text: text.value, color: color.value, fontSize: parseInt(fontSize.value),
                                                 padding: parseInt(padding.value), margin: parseInt(margin.value), backgroundColor: backgroundColor.value,
-                                                borderColor: borderColor.value, borderRadius: parseInt(borderRadius.value), borderWidth: parseInt(borderWidth.value) } });
+                                                borderColor: borderColor.value, borderRadius: parseInt(borderRadius.value), borderWidth: parseInt(borderWidth.value),
+                                                imageURL: imageURL.value } });
                                                 text.value = "";
                                                 color.value = "";
                                                 fontSize.value = "";
@@ -143,6 +152,7 @@ class EditLogoScreen extends Component {
                                                 borderColor = "";
                                                 borderRadius = "";
                                                 borderWidth = "";
+                                                imageURL = "";
                                             }}>
                                                 <div className="form-group">
                                                     <label htmlFor="text">Text:</label>
@@ -198,6 +208,12 @@ class EditLogoScreen extends Component {
                                                         borderWidth = node;
                                                     }} placeholder="Border Thickness" defaultValue={data.logo.borderWidth} onChange={this.handleBorderWidthChange}/>
                                                 </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="imageURL">Image URL:</label>
+                                                    <input type="text" className="form-control" name="imageURL" ref={node => {
+                                                        imageURL = node;
+                                                    }} placeholder="Image URL" defaultValue={data.logo.imageURL} onChange={this.handleImageURLChange}/>
+                                                </div>
                                                 <button type="submit" className="btn btn-success">Submit</button>
                                                 <div style={{
                                                     borderStyle: 'solid',
@@ -211,6 +227,9 @@ class EditLogoScreen extends Component {
                                                     borderWidth: this.state.borderWidth + "pt",
                                                 }}>
                                                     {this.state.text}
+                                                </div>
+                                                <div>
+                                                    {<img src={this.state.imageURL} alt=""></img>}
                                                 </div>
                                             </form>
                                             {loading && <p>Loading...</p>}

@@ -12,6 +12,7 @@ var LogoSchema = new mongoose.Schema({
   borderRadius: { type: Number, min: 2, max: 144 },
   borderWidth: { type: Number, min: 2, max: 144 },
   lastUpdate: { type: Date, default: Date.now },
+  imageURL: { type: String, default: "https://www.howtogeek.com/wp-content/uploads/2018/06/shutterstock_1006988770.png"},
 });
 
 module.exports = mongoose.model('Logo', LogoSchema);

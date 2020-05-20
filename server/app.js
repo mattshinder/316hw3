@@ -15,7 +15,15 @@ mongoose.connect('mongodb://localhost/node-graphql', { promiseLibrary: require('
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+
+// html2canvas proxy
+// var proxy = require('html2canvas-proxy');
+
+
+
 var app = express();
+// app.use('/', proxy());
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,6 +43,7 @@ app.use('/graphql', cors(), graphqlHTTP({
   rootValue: global,
   graphiql: true,
 }));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

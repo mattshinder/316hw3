@@ -48,7 +48,13 @@ var logoType = new GraphQLObjectType({
             },
             imageURL: {
                 type: GraphQLString
-            }
+            },
+            imageWidth: {
+                type: GraphQLInt
+            },
+            imageHeight: {
+                type: GraphQLInt
+            },
         }
     }
 });
@@ -123,7 +129,13 @@ var mutation = new GraphQLObjectType({
                     },
                     imageURL: {
                         type: new GraphQLNonNull(GraphQLString)
-                    }
+                    },
+                    imageWidth: {
+                        type: new GraphQLNonNull(GraphQLInt)
+                    },
+                    imageHeight: {
+                        type: new GraphQLNonNull(GraphQLInt)
+                    },
                 },
                 resolve: function (root, params) {
                     const logoModel = new LogoModel(params);
@@ -170,12 +182,19 @@ var mutation = new GraphQLObjectType({
                     },
                     imageURL: {
                         type: new GraphQLNonNull(GraphQLString)
-                    }
+                    },
+                    imageWidth: {
+                        type: new GraphQLNonNull(GraphQLInt)
+                    },
+                    imageHeight: {
+                        type: new GraphQLNonNull(GraphQLInt)
+                    },
                 },
                 resolve(root, params) {
                     return LogoModel.findByIdAndUpdate(params.id, { text: params.text, color: params.color, fontSize: params.fontSize, padding: params.padding,
                         margin: params.margin, backgroundColor: params.backgroundColor, borderColor: params.borderColor, borderRadius: params.borderRadius,
-                        borderWidth: params.borderWidth, lastUpdate: new Date(), imageURL: params.imageURL}, function (err) {
+                        borderWidth: params.borderWidth, lastUpdate: new Date(), imageURL: params.imageURL, imageWidth: params.imageWidth, imageHeight: params.imageHeight}, 
+                        function (err) {
                         if (err) return next(err);
                     });
                 }

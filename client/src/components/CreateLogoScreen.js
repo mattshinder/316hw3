@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import { Link } from 'react-router-dom';
+import Draggable from 'react-draggable';
+import Box from '@material-ui/core/Box';
 
 const ADD_LOGO = gql`
     mutation AddLogo(
@@ -13,7 +15,10 @@ const ADD_LOGO = gql`
         $backgroundColor: String!,
         $borderColor: String!,
         $borderRadius: Int!,
-        $borderWidth: Int!) {
+        $borderWidth: Int!,
+        $imageURL: String!,
+        $imageWidth: Int!,
+        $imageHeight: Int!) {
         addLogo(
             text: $text,
             color: $color,
@@ -23,7 +28,10 @@ const ADD_LOGO = gql`
             backgroundColor: $backgroundColor,
             borderColor: $borderColor,
             borderRadius: $borderRadius,
-            borderWidth: $borderWidth) {
+            borderWidth: $borderWidth,
+            imageURL: $imageURL,
+            imageWidth: $imageWidth,
+            imageHeight: $imageHeight) {
             _id
         }
     }
@@ -44,7 +52,10 @@ class CreateLogoScreen extends Component {
                 backgroundColor: "#ff0000",
                 borderColor: "#11ff00",
                 borderRadius: 10,
-                borderWidth: 10
+                borderWidth: 10,
+                imageURL: "https://www.howtogeek.com/wp-content/uploads/2018/06/shutterstock_1006988770.png",
+                imageWidth: 200,
+                imageHeight: 200,
             }
     }
     handleTextChange = (event) => {
@@ -74,9 +85,18 @@ class CreateLogoScreen extends Component {
     handleBorderWidthChange = (event) => {
         this.setState({borderWidth: event.target.value});
     }
+    handleImageURLChange = (event) => {
+        this.setState({imageURL: event.target.value});
+    }
+    handleImageWidthChange = (event) => {
+        this.setState({imageWidth: event.target.value});
+    }
+    handleImageHeightChange = (event) => {
+        this.setState({imageHeight: event.target.value});
+    }
 
     render() {
-        let text, color, fontSize, padding, margin, backgroundColor, borderColor, borderRadius, borderWidth;
+        let text, color, fontSize, padding, margin, backgroundColor, borderColor, borderRadius, borderWidth, imageURL, imageWidth, imageHeight
         return (
             <Mutation mutation={ADD_LOGO} onCompleted={() => this.props.history.push('/')}>
                 {(addLogo, { loading, error }) => (
@@ -93,7 +113,8 @@ class CreateLogoScreen extends Component {
                                     e.preventDefault();
                                     addLogo({ variables: { text: text.value, color: color.value, fontSize: parseInt(fontSize.value),
                                         padding: parseInt(padding.value), margin: parseInt(margin.value), backgroundColor: backgroundColor.value,
-                                        borderColor: borderColor.value, borderRadius: parseInt(borderRadius.value), borderWidth: parseInt(borderWidth.value) } });
+                                        borderColor: borderColor.value, borderRadius: parseInt(borderRadius.value), borderWidth: parseInt(borderWidth.value),
+                                        imageURL: imageURL.value, imageWidth: parseInt(imageWidth.value), imageHeight: parseInt(imageHeight.value)} });
                                         text.value = "";
                                         color.value = "";
                                         fontSize.value = "";
@@ -103,6 +124,9 @@ class CreateLogoScreen extends Component {
                                         borderColor = "";
                                         borderRadius = "";
                                         borderWidth = "";
+                                        imageURL = "";
+                                        imageWidth = "";
+                                        imageHeight = "";
                                 }}>
                                     <div className="form-group">
                                         <label htmlFor="text">Text:</label>
@@ -158,20 +182,54 @@ class CreateLogoScreen extends Component {
                                             borderWidth = node;
                                         }} placeholder={this.state.borderWidth} defaultValue={this.state.borderWidth} onChange={this.handleBorderWidthChange}/>
                                     </div>
-                                    <button type="submit" className="btn btn-success">Submit</button>
-                                    <div style={{
-                                        borderStyle: 'solid',
-                                        color: this.state.color,
-                                        fontSize: this.state.fontSize + "pt",
-                                        padding: this.state.padding + "pt",
-                                        margin: this.state.margin + "pt",
-                                        backgroundColor: this.state.backgroundColor,
-                                        borderColor: this.state.borderColor,
-                                        borderRadius: this.state.borderRadius + "pt",
-                                        borderWidth: this.state.borderWidth + "pt",
-                                    }}>
-                                        {this.state.text}
+                                    <div className="form-group">
+                                        <label htmlFor="imageURL">Image URL:</label>
+                                        <input type="text" className="form-control" name="imageURL" ref={node => {
+                                            imageURL = node;
+                                        }} placeholder="Image URL" defaultValue={this.state.imageURL} onChange={this.handleImageURLChange}/>
                                     </div>
+                                    <div className="form-group">
+                                        <label htmlFor="imageWidth">Image Width:</label>
+                                        <input type="text" className="form-control" name="imageWidth" ref={node => {
+                                            imageWidth = node;
+                                        }} placeholder="Image Width" defaultValue={this.state.imageWidth} onChange={this.handleImageWidthChange}/>
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="imageHeight">Image Height:</label>
+                                        <input type="text" className="form-control" name="imageHeight" ref={node => {
+                                            imageHeight = node;
+                                        }} placeholder="Image Height" defaultValue={this.state.imageHeight} onChange={this.handleImageHeightChange}/>
+                                    </div>
+                                    
+                                    <button type="submit" className="btn btn-success">Submit</button>
+
+                                    <Box style={{
+                                                    borderStyle: 'solid',
+                                                    borderColor: this.state.borderColor
+                                                }}width={1000} height={750}>
+
+                                                <Draggable>
+                                                <div style={{
+                                                    borderStyle: 'solid',
+                                                    color: this.state.color,
+                                                    fontSize: this.state.fontSize + "pt",
+                                                    padding: this.state.padding + "pt",
+                                                    margin: this.state.margin + "pt",
+                                                    backgroundColor: this.state.backgroundColor,
+                                                    borderColor: this.state.borderColor,
+                                                    borderRadius: this.state.borderRadius + "pt",
+                                                    borderWidth: this.state.borderWidth + "pt",
+                                                }}>
+                                                    {this.state.text}
+                                                </div>
+                                                </Draggable>
+
+                                                <Draggable bounds="body">
+                                                <div>
+                                                {<img src={this.state.imageURL} alt="" width={this.state.imageWidth + "px"} height={this.state.imageHeight + "px"}></img>}
+                                                </div>
+                                                </Draggable>
+                                                </Box>
                                 </form>
                                 {loading && <p>Loading...</p>}
                                 {error && <p>Error :( Please try again</p>}

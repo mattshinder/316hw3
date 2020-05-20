@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import gql from "graphql-tag";
 import { Query, Mutation } from "react-apollo";
+import '../App.css';
+import Draggable from 'react-draggable';
+import Box from '@material-ui/core/Box';
+
 
 const GET_LOGO = gql`
     query logo($logoId: String) {
@@ -17,6 +21,8 @@ const GET_LOGO = gql`
             borderRadius
             borderWidth
             imageURL
+            imageWidth
+            imageHeight
         }
     }
 `;
@@ -33,7 +39,9 @@ const UPDATE_LOGO = gql`
         $borderColor: String!,
         $borderRadius: Int!,
         $borderWidth: Int!,
-        $imageURL: String!) {
+        $imageURL: String!,
+        $imageWidth: Int!,
+        $imageHeight: Int!) {
             updateLogo(
                 id: $id,
                 text: $text,
@@ -45,7 +53,9 @@ const UPDATE_LOGO = gql`
                 borderColor: $borderColor,
                 borderRadius: $borderRadius,
                 borderWidth: $borderWidth,
-                imageURL: $imageURL) {
+                imageURL: $imageURL,
+                imageWidth: $imageWidth,
+                imageHeight: $imageHeight) {
                     lastUpdate
                 }
         }
@@ -70,6 +80,8 @@ class EditLogoScreen extends Component {
                 borderRadius: "",
                 borderWidth: "",
                 imageURL: "",
+                imageX: "",
+                imageY: ""
             }
     }
     handleTextChange = (event) => {
@@ -102,9 +114,21 @@ class EditLogoScreen extends Component {
     handleImageURLChange = (event) => {
         this.setState({imageURL: event.target.value});
     }
+    handleImageWidthChange = (event) => {
+        this.setState({imageWidth: event.target.value});
+    }
+    handleImageHeightChange = (event) => {
+        this.setState({imageHeight: event.target.value});
+    }
+    handleLogoXChange = (event) => {
+        this.setState({logoX: event.target.value});
+    }
+    handleLogoHYChange = (event) => {
+        this.setState({logoY: event.target.value});
+    }
 
     render() {
-        let text, color, fontSize, padding, margin, backgroundColor, borderColor, borderRadius, borderWidth, imageURL;
+        let text, color, fontSize, padding, margin, backgroundColor, borderColor, borderRadius, borderWidth, imageURL, imageWidth, imageHeight
         return (
             <Query query={GET_LOGO} variables={{ logoId: this.props.match.params.id }}>
                 {({ loading, error, data }) => {
@@ -121,7 +145,9 @@ class EditLogoScreen extends Component {
                             borderColor: data.logo.borderColor,
                             borderRadius: data.logo.borderRadius,
                             borderWidth: data.logo.borderWidth,
-                            imageURL: data.logo.imageURL
+                            imageURL: data.logo.imageURL,
+                            imageWidth: data.logo.imageWidth,
+                            imageHeight: data.logo.imageHeight
                             });
                     }
 
@@ -142,7 +168,7 @@ class EditLogoScreen extends Component {
                                                 updateLogo({ variables: { id: data.logo._id, text: text.value, color: color.value, fontSize: parseInt(fontSize.value),
                                                 padding: parseInt(padding.value), margin: parseInt(margin.value), backgroundColor: backgroundColor.value,
                                                 borderColor: borderColor.value, borderRadius: parseInt(borderRadius.value), borderWidth: parseInt(borderWidth.value),
-                                                imageURL: imageURL.value } });
+                                                imageURL: imageURL.value, imageWidth: parseInt(imageWidth.value), imageHeight: parseInt(imageHeight.value) } });
                                                 text.value = "";
                                                 color.value = "";
                                                 fontSize.value = "";
@@ -153,6 +179,8 @@ class EditLogoScreen extends Component {
                                                 borderRadius = "";
                                                 borderWidth = "";
                                                 imageURL = "";
+                                                imageWidth = "";
+                                                imageHeight = "";
                                             }}>
                                                 <div className="form-group">
                                                     <label htmlFor="text">Text:</label>
@@ -214,7 +242,36 @@ class EditLogoScreen extends Component {
                                                         imageURL = node;
                                                     }} placeholder="Image URL" defaultValue={data.logo.imageURL} onChange={this.handleImageURLChange}/>
                                                 </div>
-                                                <button type="submit" className="btn btn-success">Submit</button>
+                                                <div className="form-group">
+                                                    <label htmlFor="imageWidth">Image Width:</label>
+                                                    <input type="text" className="form-control" name="imageWidth" ref={node => {
+                                                        imageWidth = node;
+                                                    }} placeholder="Image Width" defaultValue={data.logo.imageWidth} onChange={this.handleImageWidthChange}/>
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="imageHeight">Image Height:</label>
+                                                    <input type="text" className="form-control" name="imageHeight" ref={node => {
+                                                        imageHeight = node;
+                                                    }} placeholder="Image Height" defaultValue={data.logo.imageHeight} onChange={this.handleImageHeightChange}/>
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="logoX">Logo Width:</label>
+                                                    <input type="text" className="form-control" name="logoWidth" ref={node => {
+                                                    }} placeholder="Logo Width" defaultValue="1000" onChange={this.handleLogoXChange}/>
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="logoY">Logo Height:</label>
+                                                    <input type="text" className="form-control" name="logoY" ref={node => {
+                                                    }} placeholder="Logo Height" defaultValue="750" onChange={this.handleLogoYChange}/>
+                                                </div>
+                                                <button type="submit" className="btn btn-warning">Submit</button>
+
+                                                <Box style={{
+                                                    borderStyle: 'solid',
+                                                    borderColor: this.state.borderColor
+                                                }}width={1000} height={750}>
+
+                                                <Draggable>
                                                 <div style={{
                                                     borderStyle: 'solid',
                                                     color: this.state.color,
@@ -228,9 +285,14 @@ class EditLogoScreen extends Component {
                                                 }}>
                                                     {this.state.text}
                                                 </div>
+                                                </Draggable>
+
+                                                <Draggable bounds="body">
                                                 <div>
-                                                    {<img src={this.state.imageURL} alt=""></img>}
+                                                {<img src={this.state.imageURL} alt="" width={this.state.imageWidth + "px"} height={this.state.imageHeight + "px"}></img>}
                                                 </div>
+                                                </Draggable>
+                                                </Box>
                                             </form>
                                             {loading && <p>Loading...</p>}
                                             {error && <p>Error :( Please try again</p>}
